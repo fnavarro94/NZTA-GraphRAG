@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NZTA BOT</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+        <style>
+
+
+
+
+
+
+
+
+
+
+.container {
+    max-width: 65%; /* Reduce the overall width of the chat window */
+    margin: 0 auto; /* Center the container horizontally on the page */
+    padding: 0; /* Remove any padding */
+}
+
+.chat-container {
+    max-height: 70vh; /* Set the maximum height of the chat container */
+    overflow-y: auto; /* Allow scrolling when content exceeds the height */
+    margin-bottom: 0; /* Remove the bottom margin to bring the input container closer */
+    width: 100%; /* Ensure it matches the width of the container */
+}
+
+.input-container {
+    width: 100%; /* Ensure the input container matches the width of the chat container */
+    display: flex; /* Use Flexbox layout */
+    align-items: center; /* Center elements vertically */
+    margin: 0; /* Remove auto margin to align it directly under the chat window */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding: 0 10px 10px 10px; /* Add padding to match the chat window */
+}
+
+#userInput {
+    flex-grow: 1; /* Make the input field take up remaining space */
+    margin-right: 10px; /* Add some space between the input and the button */
+    width: 100%; /* Ensure the input field stretches to fill the container */
+    box-sizing: border-box; /* Include padding and border in the input's total width and height */
+}
+
+.btn-primary {
+    background-color: #4682B4; /* Soft Blue */
+    border-color: #4682B4; /* Soft Blue */
+    color: white; /* White text for good contrast */
+    flex-shrink: 0; /* Prevent the button from shrinking */
+}
+   
+    .chat-message {
+    clear: both; /* Ensure each message starts on a new line */
+    margin-bottom: 10px; /* Add some space between messages */
+}
+
+.chat-message.user {
+    background-color: #f5f5dc; /* Beige background color */
+    color: black; /* Ensure text is visible against the beige background */
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: auto; /* Push the user messages to the right */
+    text-align: right;
+    margin-right: 10px; /* Space between user messages and the edge */
+    display: inline-block; /* Allow the width to adjust based on content */
+    max-width: 70%; /* Set a maximum width of 70% of the chat container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    word-wrap: break-word; /* Break long words to avoid overflow */
+    float: right; /* Align user messages to the right */
+}
+
+.chat-message.bot {
+    color: black; /* Text color for bot messages */
+    margin-right: auto; /* Push the bot messages to the left */
+    text-align: left;
+    margin-left: 10px; /* Space between bot messages and the edge */
+    display: block; /* Let bot messages span the full width of the container */
+    max-width: 70%; /* Set a maximum width of 70% of the chat container */
+    word-wrap: break-word; /* Break long words to avoid overflow */
+    float: left; /* Align bot messages to the left */
+}
+    pre code {
+        background-color: #2d2d2d; /* Darker background for code blocks */
+        color: #f8f8f2; /* Light text for better contrast */
+        padding: 10px;
+        border-radius: 5px;
+        display: block;
+        overflow-x: auto; /* Handle long lines with horizontal scrolling */
+    }
+    
+</style>
+
+    
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mt-4">NZTA BOT</h1>
+        <div class="chat-container">
+            <ul id="conversation" class="list-unstyled overflow-auto">
+                <!-- Conversation goes here -->
+            </ul>
+        </div>
+        
+        <div class="input-container bg-light">
+            <input type="text" id="userInput" class="form-control" placeholder="Say something..." autofocus>
+            <button onclick="sendMessage()" class="btn btn-primary ml-2">Send</button>
+        </div>
+    </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function sendMessage() {
+    var input = document.getElementById('userInput');
+    var text = input.value;
+    input.value = ''; // clear input
+    addToConversation('You: ' + text, true);
+
+    fetch('/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({message: text})
+    })
+    .then(response => response.json())
+    .then(data => addToConversation(data.response, false)) // Display bot response
+    .catch(error => console.error('Error:', error));
+}
+
+document.getElementById('userInput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        sendMessage(); // Call sendMessage when Enter is pressed
+    }
+});
+
+function addToConversation(text, isUser) {
+    var node = document.createElement("li");
+    node.classList.add("chat-message", isUser ? "user" : "bot");
+    document.getElementById("conversation").appendChild(node);
+
+    if (isUser) {
+        node.textContent = text; // Directly set text for user messages
+    } else {
+        node.innerHTML = ""; // Clear the node first if it had previous text
+        handleMessageParts(text, node); // Process the message parts (text and code)
+    }
+    node.scrollIntoView(); // Scroll to the new message
+}
+
+function handleMessageParts(text, node) {
+    const parts = text.split(/(```[\s\S]*?```)/g); // Split text by code blocks
+    let i = 0;
+
+    function processPart() {
+        if (i >= parts.length) return; // If all parts are processed, return
+
+        const part = parts[i++];
+
+        if (part.startsWith('```') && part.endsWith('```')) {
+            // This is a code block
+            const codeNode = document.createElement("pre");
+            const codeElement = document.createElement("code");
+            codeElement.classList.add("language-python"); // Or another language if you prefer
+            codeElement.textContent = part.slice(3, -3); // Remove ``` from start and end
+            codeNode.appendChild(codeElement);
+            node.appendChild(codeNode);
+            hljs.highlightElement(codeElement); // Apply syntax highlighting
+            node.scrollIntoView(); // Scroll to the new message
+            processPart(); // Continue to next part
+        } else {
+            // This is regular text
+            typeMessage(part, node, processPart); // Use typing effect
+        }
+    }
+
+    processPart(); // Start processing the first part
+}
+
+function typeMessage(message, node, callback) {
+    let i = 0;
+    function typing() {
+        if (i < message.length) {
+            node.innerHTML += message.charAt(i);
+            i++;
+            setTimeout(typing, 10); // Adjust typing speed (ms)
+        } else if (callback) {
+            callback(); // Call the callback when typing is complete
+        }
+    }
+    typing();
+}
+
+</script>
+
+</body>
+</html>
