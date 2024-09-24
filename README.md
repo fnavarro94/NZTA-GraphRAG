@@ -16,9 +16,15 @@ Built for the New Zealand Transport Agency (NZTA) as a use case.
 
 ## Introduction
 
-NZTA-GraphRAG is a prototype of a Graph Retrieval Augmented Generative Chatbot developed for the New Zealand Transport Agency (NZTA). It leverages advanced graph-based retrieval methods to provide intelligent and contextually relevant responses.
+NZTA-GraphRAG is a prototype of a Graph Retrieval Augmented Generative Chatbot developed for the New Zealand Transport Agency (NZTA). It leverages graph-based retrieval methods to provide intelligent and contextually relevant responses.
 
 ## Setup Instructions
+
+### 1. To run this you will need a groq api key which provides free acces to fast llm inference models through an api. You can get one by going to [groq](https://console.groq.com/keys). It is free but requires an account
+
+Alternatively you can use Ollama localy on your machine but response generation will be much slower (instructions for this comming soon). 
+
+Once you have generated your groq key, copy it and paste it in the .env file  `GROQ_API_KEY` entry. Save the file and exit. 
 
 ### 1. Install Google Chrome
 
