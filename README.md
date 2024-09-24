@@ -63,7 +63,7 @@ NEO4J_DATABASE=neo4j
 - Follow [this guide](https://docs.google.com/document/d/1f7_xYh_ZiRN6rhQZgvqgnqvm6_KM76Xs1UaiYTIg1RU/edit?usp=sharing) to start the first db instance.
 - Copy your created username (`NEO4J_USERNAME`), password (`NEO4J_PASSWORD`) and port (`NEO4J_URL`) into the .env file. 
 
-### 4. Install Google Chrome and Chrome Driver
+### 4. Install Google Chrome
 
 Download and install the latest version of Google Chrome from the [official support page](https://support.google.com/chrome/answer/95346?hl=en&co=GENIE.Platform%3DDesktop).
 
