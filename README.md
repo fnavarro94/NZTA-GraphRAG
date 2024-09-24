@@ -10,7 +10,7 @@ Built for the New Zealand Transport Agency (NZTA) as a use case.
   - [1. Clone the repository](#1-clone-the-repository)
   - [2. Get a Groq API key](#2-get-a-groq-api-key)
   - [3. Set up Neo4j](#3-set-up-neo4j)
-  - [4. Install Google Chrome with Chrome driver](#4-install-google-chrome)
+  - [4. Install Google Chrome](#4-install-google-chrome)
   - [5. Setup ChromeDriver](#5-setup-chromedriver)
   
 - [Usage](#usage)
