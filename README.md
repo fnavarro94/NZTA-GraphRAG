@@ -7,10 +7,12 @@ Built for the New Zealand Transport Agency (NZTA) as a use case.
 
 - [Introduction](#introduction)
 - [Prerequisites](#Prerequisites)
-  - [0. Clone the repository](#0-clone-the-repository) 
-  - [1. Install Google Chrome](#1-install-google-chrome)
-  - [2. Download ChromeDriver](#2-download-chromedriver)
-  - [3. Configure ChromeDriver](#3-configure-chromedriver)
+  - [1. Clone the repository](#1-clone-the-repository)
+  - [2. Get a Groq API key](#2-get-a-groq-api-key)
+  - [3. Set up Neo4j](#3-set-up-neo4j)
+  - [2. Install Google Chrome](#1-install-google-chrome)
+  - [3. Download ChromeDriver](#2-download-chromedriver)
+  - [4. Configure ChromeDriver](#3-configure-chromedriver)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
@@ -22,7 +24,7 @@ NZTA-GraphRAG is a prototype of a Graph Retrieval Augmented Generative Chatbot d
 ## Prerequisites
 
 
-### 0. Clone the repository
+### 1. Clone the repository
 - use
   ```{bash}
   git clone https://github.com/fnavarro94/NZTA-GraphRAG.git
@@ -34,7 +36,7 @@ NZTA-GraphRAG is a prototype of a Graph Retrieval Augmented Generative Chatbot d
   ```
   you will use this .env file on later.
 
-### 1. Obtain a Groq Api Key
+### 2. Get a Groq Api Key
 To run this you will need a groq api key which provides free acces to fast llm inference models through an api. You can get one by going to [groq](https://console.groq.com/keys).
 
 Alternatively you can use Ollama localy on your machine but response generation will be much slower (instructions for this comming soon). 
