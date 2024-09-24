@@ -41,6 +41,19 @@ Alternatively you can use Ollama localy on your machine but response generation 
 
 Once you have generated your groq key, copy it and paste it in the .env file  `GROQ_API_KEY` entry on the .env file you created earlier. 
 
+For example
+
+```
+# .env
+GROQ_API_KEY=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
+NEO4J_USERNAME=neo4j
+NEO4J_PASSWORD=
+NEO4J_URL=bolt://localhost:7687
+NEO4J_DATABASE=neo4j
+
+
+```
+
 ### 
 
 ### 3. Set Up Neo4j
