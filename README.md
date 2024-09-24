@@ -20,7 +20,8 @@ NZTA-GraphRAG is a prototype of a Graph Retrieval Augmented Generative Chatbot d
 
 ## Setup Instructions
 
-### 1. To run this you will need a groq api key which provides free acces to fast llm inference models through an api. You can get one by going to [groq](https://console.groq.com/keys). It is free but requires an account
+### 1. Get a Groq Api Key
+To run this you will need a groq api key which provides free acces to fast llm inference models through an api. You can get one by going to [groq](https://console.groq.com/keys). It is free but requires an account
 
 Alternatively you can use Ollama localy on your machine but response generation will be much slower (instructions for this comming soon). 
 
