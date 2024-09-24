@@ -6,7 +6,7 @@ Built for the New Zealand Transport Agency (NZTA) as a use case.
 ## Table of Contents
 
 - [Introduction](#introduction)
-- [Prerequisites](#Prerequisites)
+- [Setup](#Setup)
   - [1. Clone the repository](#1-clone-the-repository)
   - [2. Get a Groq API key](#2-get-a-groq-api-key)
   - [3. Set up Neo4j](#3-set-up-neo4j)
@@ -21,7 +21,7 @@ Built for the New Zealand Transport Agency (NZTA) as a use case.
 
 NZTA-GraphRAG is a prototype of a Graph Retrieval Augmented Generative Chatbot developed for the New Zealand Transport Agency (NZTA). It leverages graph-based retrieval methods to provide intelligent and contextually relevant responses.
 
-## Prerequisites
+## Setup
 
 
 ### 1. Clone the repository
@@ -64,25 +64,22 @@ NEO4J_DATABASE=neo4j
 - Follow [this guide](https://docs.google.com/document/d/1f7_xYh_ZiRN6rhQZgvqgnqvm6_KM76Xs1UaiYTIg1RU/edit?usp=sharing) to start the first db instance.
 - Copy your created username (`NEO4J_USERNAME`), password (`NEO4J_PASSWORD`) and port (`NEO4J_URL`) into the .env file. 
 
-### 1. Install Google Chrome
+### 4. Install Google Chrome and Chrome Driver
 
 Download and install the latest version of Google Chrome from the [official support page](https://support.google.com/chrome/answer/95346?hl=en&co=GENIE.Platform%3DDesktop).
 
-### 2. Download ChromeDriver
-
-Ensure that the ChromeDriver version matches the version of Google Chrome you have installed.
+Download Chrome Driver ensuring that the version matches the version of Google Chrome you have installed.
 
 1. Visit the [Chrome for Testing](https://googlechromelabs.github.io/chrome-for-testing/) page.
-2. Download the appropriate ChromeDriver executable for your operating system.
 
 ### 3. Configure ChromeDriver
 
 1. **Copy the Executable:**
    
-   - **Windows:** Rename the downloaded file to `chromedriver.exe`.
-   - **Mac:** Rename the downloaded file to `chromedriver`.
+   - **Windows:**  `chromedriver.exe`.
+   - **Mac:** `chromedriver`.
 
-   Copy the renamed executable to the `driver` directory in the repository.
+   Copy the  executable and all othe files that come with the download into the `driver` directory of the repository.
 
 2. **Mac Users Only:** Set the necessary permissions by running the following command in the terminal:
 
@@ -94,19 +91,5 @@ Ensure that the ChromeDriver version matches the version of Google Chrome you ha
 
 ## Usage
 
-[Provide detailed instructions on how to use the chatbot here.]
-
-## Contributing
-
-Contributions are welcome! Please follow these steps to contribute:
-
-1. Fork the repository.
-2. Create a new branch: `git checkout -b feature/YourFeature`.
-3. Commit your changes: `git commit -m 'Add some feature'`.
-4. Push to the branch: `git push origin feature/YourFeature`.
-5. Open a pull request.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
+[usage info goes here]
 
