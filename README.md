@@ -7,6 +7,7 @@ Built for the New Zealand Transport Agency (NZTA) as a use case.
 
 - [Introduction](#introduction)
 - [Prerequisites](#Prerequisites)
+  - [0. Clone the repository](#0-clone-the-repository) 
   - [1. Install Google Chrome](#1-install-google-chrome)
   - [2. Download ChromeDriver](#2-download-chromedriver)
   - [3. Configure ChromeDriver](#3-configure-chromedriver)
