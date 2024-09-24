@@ -20,6 +20,13 @@ NZTA-GraphRAG is a prototype of a Graph Retrieval Augmented Generative Chatbot d
 
 ## Prerequisites
 
+
+### 0. Clone the repository
+- use
+  ```{bash}
+  git clone 
+  ```
+
 ### 1. Obtain a Groq Api Key
 To run this you will need a groq api key which provides free acces to fast llm inference models through an api. You can get one by going to [groq](https://console.groq.com/keys). It is free but will requires an account to obtain it. 
 
@@ -27,10 +34,12 @@ Alternatively you can use Ollama localy on your machine but response generation 
 
 Once you have generated your groq key, copy it and paste it in the .env file  `GROQ_API_KEY` entry. Save the file and exit. 
 
-### 2. Set Up Neo4j
+### 
+
+### 3. Set Up Neo4j
 * We use Neo4j for this usecase but Llama-Index supports many other graph databases. [Llama-index Graph Stores](https://docs.llamaindex.ai/en/stable/community/integrations/graph_stores/)
 - Download [Neo4j Descktop](https://neo4j.com/download/?utm_source=Google&utm_medium=PaidSearch&utm_campaign=Evergreen&utm_content=APAC-Search-SEMCE-DSA-None-SEM-SEM-NonABM&utm_term=&utm_adgroup=DSA&gad_source=1&gbraid=0AAAAADk9OYoXSQrlYLZG7dru9vfHVS8AY&gclid=Cj0KCQjwxsm3BhDrARIsAMtVz6P9mwe7uNuMCtDLOdCsyTfMbxGH7oH8MofV4NVE9d4wd2VhJ-jCTkAaAiqtEALw_wcB)
-- 
+- Follow [this guide](https://docs.google.com/document/d/1f7_xYh_ZiRN6rhQZgvqgnqvm6_KM76Xs1UaiYTIg1RU/edit?usp=sharing) to start the first db instance. 
 
 ### 1. Install Google Chrome
 
