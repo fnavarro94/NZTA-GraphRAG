@@ -24,7 +24,7 @@ NZTA-GraphRAG is a prototype of a Graph Retrieval Augmented Generative Chatbot d
 ### 0. Clone the repository
 - use
   ```{bash}
-  git clone 
+  git clone https://github.com/fnavarro94/NZTA-GraphRAG.git
   ```
 
 ### 1. Obtain a Groq Api Key
