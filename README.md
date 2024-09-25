@@ -33,12 +33,12 @@ NZTA-GraphRAG is a prototype of a Graph Retrieval Augmented Generative Chatbot d
   ```{bash}
   cd NZTA-GraphRAG
   ```
-  
--  and run the following comman
+- and run the following command
   ```{bash}
   cp .env.example .env
   ```
-  you will use this .env file on later.
+  
+  you will use this .env file later.
 
 ### 2. Get a Groq Api Key
 To run this you will need a groq api key which provides free acces to fast llm inference models through an api. You can get one by going to [groq](https://console.groq.com/keys).
