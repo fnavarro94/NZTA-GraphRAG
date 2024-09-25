@@ -29,7 +29,12 @@ NZTA-GraphRAG is a prototype of a Graph Retrieval Augmented Generative Chatbot d
   git clone https://github.com/fnavarro94/NZTA-GraphRAG.git
   ```
 - Alternatively download the repository as a zip file and extract it locally.
-- Then run the following command on the command prompt
+- Then move to NZTA-GraphRAG directory
+  ```{bash}
+  cd NZTA-GraphRAG
+  ```
+  
+-  and run the following comman
   ```{bash}
   cp .env.example .env
   ```
