@@ -95,5 +95,42 @@ Download Chrome Driver ensuring that the version matches the version of Google C
 
 ## Usage
 
-[usage info goes here]
+Once the steps above have been completed you may run the crawlers to download the data and then run the knowledge graph data loader script to start populating the property graph index into the neo4j database. Once both of this steps are doen it is possible to chat with the chatbot. 
 
+First install the dependencies with
+
+```{bash}
+pip install -r requirements.txt
+```
+
+To crawl NZTA OIA responses
+
+```{bash}
+python crawler.py
+```
+
+For ministry of transport data
+
+```{bash}
+python transport_gov_crawler.py
+```
+
+Once the crawlers are done you may start uploading data into neo4j. Make sure you are hosting a database locally (you have clicked start on the neo4j UI for the database you want to use).
+
+```{bash}
+
+python kg_data_loader.py
+
+```
+
+Finaly to run the chatbot move on to the chatbot directory
+```{bash}
+cd chatbot
+```
+Run the flask app that hosts the chatbot
+
+```{bash}
+python kg_app.py
+```
+
+you will find the url of the locally hosted app on the output. Go to that url with your browser to find the chatbot interface. 
