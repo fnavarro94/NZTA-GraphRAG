@@ -118,9 +118,7 @@ python transport_gov_crawler.py
 Once the crawlers are done you may start uploading data into neo4j. Make sure you are hosting a database locally (you have clicked start on the neo4j UI for the database you want to use).
 
 ```{bash}
-
 python kg_data_loader.py
-
 ```
 
 Finaly to run the chatbot move on to the chatbot directory
