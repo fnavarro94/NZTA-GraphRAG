@@ -46,7 +46,7 @@ llama-index-cli==0.3.1
 llama-index-core==0.11.13.post1
 llama-index-embeddings-huggingface==0.3.1
 llama-index-embeddings-openai==0.2.5
-llama-index-graph-stores-neo4j==0.3.2
+llama-index-graph-stores-neo4j @ git+ssh://git@github.com/fnavarro94/llama_index.git@2fde1712768e61fc8e2c5a64963f6004f481a808#subdirectory=llama-index-integrations/graph_stores/llama-index-graph-stores-neo4j
 llama-index-indices-managed-llama-cloud==0.4.0
 llama-index-legacy==0.9.48.post3
 llama-index-llms-groq==0.2.0
