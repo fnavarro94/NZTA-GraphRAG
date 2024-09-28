@@ -31,9 +31,9 @@ This project requires **Python 3.11**. Ensure that you have Python 3.11 installe
 
 You can verify your Python version by running:
 
-...bash
+```bash
 python --version
-...
+```
 
 
 ### 1. Clone the Repository
