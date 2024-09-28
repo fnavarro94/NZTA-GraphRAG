@@ -25,6 +25,17 @@ A prototype chatbot developed for the New Zealand Transport Agency (NZTA), lever
 
 ## Setup
 
+### Python Version
+
+This project requires **Python 3.11**. Ensure that you have Python 3.11 installed on your system before proceeding with the setup.
+
+You can verify your Python version by running:
+
+...bash
+python --version
+...
+
+
 ### 1. Clone the Repository
 
 Clone the repository using Git:
