@@ -33,10 +33,13 @@ for patch_file, original_file_path in files_to_patch.items():
         continue
 
     try:
-        # Backup the original file
-        print(f"Backing up the original file: {original_file_path}")
-        shutil.copy2(original_file_path, backup_file_path)
-        print(f"Backup created at {backup_file_path}")
+        # Backup the original file if the backup does not already exist
+        if not os.path.exists(backup_file_path):
+            print(f"Backing up the original file: {original_file_path}")
+            shutil.copy2(original_file_path, backup_file_path)
+            print(f"Backup created at {backup_file_path}")
+        else:
+            print(f"Backup already exists: {backup_file_path}")
 
         # Replace the original file with the patched file
         print(f"Applying the patch from {patch_file} to {original_file_path}...")
