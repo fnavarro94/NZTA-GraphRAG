@@ -218,12 +218,7 @@ class PropertyGraphIndex(BaseIndex[IndexLPG]):
 
         kg_nodes_to_insert: List[LabelledNode] = []
         kg_rels_to_insert: List[Relation] = []
-        print("changes are being registered")
-        print(f"this is a node beofre poping the KG_NODES_KEY {KG_NODES_KEY} and KG_RELATIONS_KEY {KG_RELATIONS_KEY}")
-        print("this is the node part")
-        #print(nodes[0].metadata.pop(KG_NODES_KEY, []))
-        print("this is the relation part")
-       # print(nodes[0].metadata.pop(KG_RELATIONS_KEY, []))
+        
         for node in nodes:
             # remove nodes and relations from metadata
             kg_nodes = node.metadata.pop(KG_NODES_KEY, [])
@@ -238,15 +233,9 @@ class PropertyGraphIndex(BaseIndex[IndexLPG]):
             # add nodes and relations to insert lists
             kg_nodes_to_insert.extend(kg_nodes)
             kg_rels_to_insert.extend(kg_rels)
-        if len(kg_nodes_to_insert) > 0:
-            print(f"this is kg_node 0 {kg_nodes_to_insert[0]}")
-        if len(kg_rels_to_insert) > 0:
-            # Print the full relation as a dictionary
-
-            print(f"this is kg_rel 0 {kg_rels_to_insert[0].dict()}")
-            print(f"this is kg_rel 0 source_id {kg_rels_to_insert[0].dict()['source_id']}")
-            print(f"this is kg_rel 0 target_id {kg_rels_to_insert[0].dict()['target_id']}")
-            #print properties but do not print the following properties: 'page_label' 'file_name' 'file_path' 'file_type' 'file_size' 'creation_date' 'last_modified_date' 'triplet_source_id'
+      
+           
+            
             # List of properties to exclude
             exclude_keys = ['page_label', 'file_name', 'file_path', 'file_type', 'file_size', 'creation_date', 'last_modified_date', 'triplet_source_id']
 
@@ -255,12 +244,9 @@ class PropertyGraphIndex(BaseIndex[IndexLPG]):
 
             # Create a filtered dictionary excluding specified keys
             filtered_properties = {key: value for key, value in kg_rel_properties.items() if key not in exclude_keys}
-            print(f"this is kg_rel 0 properties {filtered_properties}")
+            
 
-            # Print the filtered properties
-            print(f"this is kg_rel 0 properties {filtered_properties}")
-            # Print the relation name
-            print(f"this is kg_rel 0 relation name {kg_rels_to_insert[0].label}")
+            
         # filter out duplicate kg nodes
         kg_node_ids = {node.id for node in kg_nodes_to_insert}
         existing_kg_nodes = self.property_graph_store.get(ids=list(kg_node_ids))
@@ -338,9 +324,7 @@ class PropertyGraphIndex(BaseIndex[IndexLPG]):
                 kg_relation_texts.append(kg_rel_text)
 
             
-            if len(kg_relation_texts) > 0:
-                print("This is an example of a kg relation to be embedded")
-                print(kg_relation_texts[0])
+            
             if self._use_async:
                 kg_relation_embeddings = asyncio.run(
                     self._embed_model.aget_text_embedding_batch(
@@ -356,7 +340,7 @@ class PropertyGraphIndex(BaseIndex[IndexLPG]):
             for kg_rel, embedding in zip(kg_rels_to_insert, kg_relation_embeddings):
                 kg_rel.properties['embedding'] = embedding
             
-            print("I have succesuflly created relation embeddings")
+            
 
             #### End of my code
 
@@ -364,26 +348,26 @@ class PropertyGraphIndex(BaseIndex[IndexLPG]):
         
         if self.vector_store is not None and len(kg_nodes_to_insert) > 0:
             self._insert_nodes_to_vector_index(kg_nodes_to_insert)
-        print("inserting nodes")
+        
         if len(nodes) > 0:
             self.property_graph_store.upsert_llama_nodes(nodes)
 
-        print("inserting kg nodes")
+        
 
         if len(kg_nodes_to_insert) > 0:
             self.property_graph_store.upsert_nodes(kg_nodes_to_insert)
 
-        print("inserting relations")
+        
 
         # important: upsert relations after nodes
         if len(kg_rels_to_insert) > 0:
             self.property_graph_store.upsert_relations(kg_rels_to_insert)
 
         # refresh schema if needed
-        print("updating schema")
+       
         if self.property_graph_store.supports_structured_queries:
             self.property_graph_store.get_schema(refresh=False)
-        print("done updating schema")
+       
 
         return nodes
 

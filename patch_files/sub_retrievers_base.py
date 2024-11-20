@@ -53,7 +53,6 @@ class BasePGRetriever(BaseRetriever):
         results = []
         for i, triplet in enumerate(triplets):
             #source_id = triplet[0].properties.get(TRIPLET_SOURCE_KEY, None)
-            print('confirmed running sorted')
             source_id = triplet[0].properties.get("best_text_id", None)
             relationships = {}
             if source_id is not None:
@@ -64,17 +63,9 @@ class BasePGRetriever(BaseRetriever):
             if self.include_properties:
                 text = f"{triplet[0]!s} -> {triplet[1]!s} -> {triplet[2]!s}"
             else:
-                print("confiremd running sorted  (with full path)")
-                #text = f"{triplet[0].id} -> {triplet[1].id} -> {triplet[2].id}"
                 text = triplet[0].properties["full_path"] #save this underneath
 
-                # save the tripplets of both versions in a txt in my desktop in file called tripplets.txt
-                # with open('/Users/felipenavarro/Desktop/tripplets_comp.txt', 'a') as f:
-                #     f.write(f"{triplet[0].id} -> {triplet[1].id} -> {triplet[2].id}\n")
-                #      #text = triplet[0].properties["full_path"] save this underneath
-                #    f.write(f"{triplet[0].properties['full_path']}\n")
-
-                #text = triplet[0].properties["full_path"]
+                
             
             results.append(
                 NodeWithScore(

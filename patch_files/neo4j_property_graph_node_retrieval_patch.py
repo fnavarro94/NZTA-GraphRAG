@@ -521,47 +521,8 @@ class Neo4jPropertyGraphStore(PropertyGraphStore):
        
         triples = []
 
-        ids = [node.id for node in graph_nodes]
-
-        response_unsorted = self.structured_query(
-    f"""
-    WITH $ids AS id_list
-    UNWIND range(0, size(id_list) - 1) AS idx
-    MATCH (e:`{BASE_ENTITY_LABEL}`)
-    WHERE e.id = id_list[idx]
-    MATCH p=(e)-[r*1..{depth}]-(other)
-    WHERE ALL(rel IN relationships(p) WHERE type(rel) <> 'MENTIONS')
-    UNWIND relationships(p) AS rel
-    WITH DISTINCT rel, idx, id_list[idx] AS seed_id, vector.similarity.cosine(rel.embedding, $embedding) AS rel_score
-    WITH startNode(rel) AS source,
-         type(rel) AS type,
-         rel{{.*}} AS rel_properties,
-         endNode(rel) AS endNode,
-         idx,
-         rel_score,
-         seed_id
-    LIMIT toInteger($limit)
-    RETURN source.id AS source_id, 
-           [l IN labels(source) WHERE NOT l IN ['{BASE_ENTITY_LABEL}', '{BASE_NODE_LABEL}'] | l][0] AS source_type,
-           source{{.*, embedding: Null, id: Null}} AS source_properties,
-           type,
-           rel_properties,
-           endNode.id AS target_id, 
-           [l IN labels(endNode) WHERE NOT l IN ['{BASE_ENTITY_LABEL}', '{BASE_NODE_LABEL}'] | l][0] AS target_type,
-           endNode{{.*, embedding: Null, id: Null}} AS target_properties,
-           idx,
-           rel_score,
-           seed_id
-    ORDER BY idx
-    LIMIT toInteger($limit)
-    """,
-    param_map={"ids": ids, "limit": limit, "embedding": query.query_embedding},
-)
-
-        """Get depth-aware rel map."""
+        ids = [node.id for node in graph_nodes]        
         
-
-
         response = self.structured_query(f"""
    // Assign an index to each id in the original list
    WITH [i IN RANGE(0, size($ids)-1) | {{id: $ids[i], seed_idx: i}}] AS id_list
@@ -645,68 +606,7 @@ class Neo4jPropertyGraphStore(PropertyGraphStore):
        "dimension": len(query.query_embedding),
    },   
 )
-       
-       # for each neighbor and seed node, query the shortest path between them that is also the one with the highest agregated cosine similarity 
-       # agregating all of the embeddings in the path
-
-        # # Needs some optimization
-        # response = self.structured_query(
-        #     f"""
-        #     WITH $ids AS id_list
-        #     UNWIND range(0, size(id_list) - 1) AS idx
-        #     MATCH (e:`{BASE_ENTITY_LABEL}`)
-        #     WHERE e.id = id_list[idx]
-        #     MATCH p=(e)-[r*1..{depth}]-(other)
-        #     WHERE ALL(rel in relationships(p) WHERE type(rel) <> 'MENTIONS')
-        #     UNWIND relationships(p) AS rel
-        #     WITH distinct rel, idx
-        #     WITH startNode(rel) AS source,
-        #         type(rel) AS type,
-        #         rel{{.*}} AS rel_properties,
-        #         endNode(rel) AS endNode,
-        #         idx
-        #     LIMIT toInteger($limit)
-        #     RETURN source.id AS source_id, [l in labels(source)
-        #            WHERE NOT l IN ['{BASE_ENTITY_LABEL}', '{BASE_NODE_LABEL}'] | l][0] AS source_type,
-        #         source{{.* , embedding: Null, id: Null}} AS source_properties,
-        #         type,
-        #         rel_properties,
-        #         endNode.id AS target_id, [l in labels(endNode)
-        #            WHERE NOT l IN ['{BASE_ENTITY_LABEL}', '{BASE_NODE_LABEL}'] | l][0] AS target_type,
-        #         endNode{{.* , embedding: Null, id: Null}} AS target_properties,
-        #         idx
-        #     ORDER BY idx
-        #     LIMIT toInteger($limit)
-        #     """,
-        #     param_map={"ids": ids, "limit": limit},
-        # )
-        
-        #if len(response) > 5:
-        # print("this is the response seed_id")
-        # print(response[5]['seed_id'])
-        # print("this is the response head id")
-        # print(response[5]['source_id'])
-        # print("this is the response tail id")
-        # print(response[5]['target_id'])
-        # print("this is the relation type")
-        # print(response[5]['type'])
-        # print("this is the relation id")
-        # print(response[5]['rel_id'])
-        
-        #print the above again only if that index exists in the response
-        
-
-        # Assume the following variables are defined:
-# seed_id: ID of the seed node
-# source_id: ID of the source node in the neighbor triplet
-# target_id: ID of the target node in the neighbor triplet
-# rel_id: ID of the relationship in the neighbor triplet
-# query_embedding: The embedding vector from your query
-# dimension: The dimensionality of your embeddings
-# max_depth: The maximum depth to search for paths
-
-        
-
+        # The following query retrieves the mukti-hop relationships for each seed node and neighbor tripplet. 
         results = []
         print("the seednodes are")
         for item in response:
@@ -805,11 +705,6 @@ class Neo4jPropertyGraphStore(PropertyGraphStore):
                     results.append(path_text)
 
 
-
-       
-        print("this is one of the results from the second query")
-        
-
         # Add the full paths form results to response
 
         for item, full_path in zip(response, results):
@@ -826,7 +721,7 @@ class Neo4jPropertyGraphStore(PropertyGraphStore):
 
         print(f"this is the type of the response {type(response[0])}")
         print('running sorted')
-        #response = response_unsorted
+        
         response = response if response else []
         print("confimred unsorted not adding full path to tripplets")
         ignore_rels = ignore_rels or []
