@@ -432,28 +432,40 @@ main(all_results)
 
 
 print("Downloading Sample Simple Files")
-# Download simple files
-simple_files = pd.read_csv('reference_tables/simple_files.csv')
+# Load the experiment files with file names
+experiment_files = pd.read_csv('reference_tables/oia_files_and_questions.csv')
 
-# loop over the rows in simple files and select the Link column
-# find the ntry in all_results that matches the link and download that link and the attatchments if any into testing_data/simple_files
+# Base URL for constructing full links
+base_url = "https://www.nzta.govt.nz"
 
+# Directory to save the downloaded files
+output_dir = 'transport_data/sample_files/nzta/simple_files/'
+os.makedirs(output_dir, exist_ok=True)
 
-for index, row in simple_files.iterrows():
-    link = row['Link']
-    #print(link)
+# Loop through the rows in the experiment files DataFrame
+for index, row in experiment_files.iterrows():
+    file_name = row['File Name']
+    
+    # Find the matching entry in all_results
     for result in all_results:
-        if 'https://www.nzta.govt.nz' + result['url'] == link:
-            
-            # Make the directory if it doesn't exist
-            os.makedirs('transport_data/sample_files/nzta/simple_files/', exist_ok=True)
-            print(f'transport_data/sample_files/nzta/simple_files/{link.split("/")[-1]}')
-            response = requests.get(link)
-            with open(f'transport_data/sample_files/nzta/simple_files/{link.split("/")[-1]}', 'wb') as f:
+        # Check if the file name matches the end of the 'url' field in all_results
+        if file_name in result['url']:
+            # Download the main file
+            full_url = base_url + result['url']
+            print(f"Downloading main file: {file_name} from {full_url}")
+            response = requests.get(full_url)
+            file_path = os.path.join(output_dir, file_name)
+            with open(file_path, 'wb') as f:
                 f.write(response.content)
-            for attachment in result['attachments']:
-                response = requests.get(attachment)
-                with open(f'testing_data/simple_files/{attachment.split("/")[-1]}', 'wb') as f:
+            
+            # Download attachments, if any
+            for attachment in result.get('attachments', []):
+                attachment_url = base_url + attachment
+                attachment_name = attachment.split('/')[-1]
+                print(f"Downloading attachment: {attachment_name} from {attachment_url}")
+                response = requests.get(attachment_url)
+                attachment_path = os.path.join(output_dir, attachment_name)
+                with open(attachment_path, 'wb') as f:
                     f.write(response.content)
 
 
