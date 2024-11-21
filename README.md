@@ -117,6 +117,29 @@ Download ChromeDriver ensuring that the version matches the version of Google Ch
 
 After completing the setup steps, you can run the crawlers to download the data and then run the knowledge graph data loader script to start populating the property graph index into the Neo4j database. Once both of these steps are done, you can interact with the chatbot.
 
+### Create a Python 3.11 Virtual Environment
+
+To ensure compatibility and maintain a clean project environment, create a virtual environment using Python 3.11:
+
+1. Create the virtual environment (replace `nzta_env` with your preferred environment name):
+   ```
+   python3.11 -m venv nzta_env
+   ```
+
+2. Activate the virtual environment:
+
+   - On macOS/Linux:
+     ```
+     source nzta_env/bin/activate
+     ```
+
+   - On Windows:
+     ```
+     nzta_env\Scripts\activate
+     ```
+
+   After activation, your terminal prompt will indicate the active environment (e.g., `(nzta_env)`).
+
 ### Install Dependencies
 
 First, install the required dependencies:
