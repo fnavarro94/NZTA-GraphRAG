@@ -65,7 +65,7 @@ You will use this `.env` file later.
 
 To run this project, you will need a Groq API key, which provides free access to fast LLM inference models through an API. You can obtain one by visiting the [Groq Console](https://console.groq.com/keys).
 
-Alternatively, you can use Ollama locally on your machine, but response generation will be much slower (instructions coming soon).
+Alternatively, you can use Ollama locally on your machine, but response generation will be much slower.
 
 Once you have generated your Groq API key, copy it and paste it into the `.env` file at the `GROQ_API_KEY` entry.
 
