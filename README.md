@@ -126,12 +126,13 @@ pip install -r requirements.txt
 ```
 
 ### Patch Files
-Now we need to patch files with the changes made to Llamaindex original souce code to apply the changes for data ingestion and retrieval mentioned in the dissertation. To do this simply run 
+To apply custom changes to the original LlamaIndex source code for data ingestion and retrieval, run the following command:
 
 ```{bash}
 python patch.py
 ```
-If you want to run the original Llamaindex code you can do so by not running the above or, in case you want to rever the changes
+This will overwrite the relevant files with the modifications described in the dissertation (Graph Based RAG.pdf). If you prefer to use the original LlamaIndex code, simply skip this step.
+To revert to the original LlamaIndex code after applying the patch, run:
 
 ```{}
 python revert_patch.py
