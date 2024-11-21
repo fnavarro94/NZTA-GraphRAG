@@ -8,16 +8,19 @@ A prototype chatbot developed for the New Zealand Transport Agency (NZTA), lever
 
 - [Introduction](#introduction)
 - [Setup](#setup)
+  - [Python Version](#python-version)
   - [1. Clone the Repository](#1-clone-the-repository)
   - [2. Obtain a Groq API Key](#2-obtain-a-groq-api-key)
   - [3. Set Up Neo4j](#3-set-up-neo4j)
   - [4. Install Google Chrome](#4-install-google-chrome)
   - [5. Set Up ChromeDriver](#5-set-up-chromedriver)
 - [Usage](#usage)
+  - [Create a Python 3.11 Virtual Environment](#create-a-python-311-virtual-environment)
   - [Install Dependencies](#install-dependencies)
   - [Patch Files](#patch-files)
   - [Crawl Data](#crawl-data)
   - [Load Data into Neo4j](#load-data-into-neo4j)
+  - [Alternative: Load Database from Dump File](#alternative-load-database-from-dump-file)
   - [Run the Chatbot](#run-the-chatbot)
 
 ## Introduction
@@ -32,16 +35,15 @@ This project requires **Python 3.11**. Ensure that you have Python 3.11 installe
 
 You can verify your Python version by running:
 
-```bash
+```
 python --version
 ```
-
 
 ### 1. Clone the Repository
 
 Clone the repository using Git:
 
-```{bash}
+```
 git clone https://github.com/fnavarro94/NZTA-GraphRAG.git
 ```
 
@@ -49,13 +51,13 @@ Alternatively, download the repository as a ZIP file and extract it locally.
 
 Navigate to the `NZTA-GraphRAG` directory:
 
-```{bash}
+```
 cd NZTA-GraphRAG
 ```
 
 Copy the example environment file:
 
-```{bash}
+```
 cp .env.example .env
 ```
 
@@ -71,7 +73,7 @@ Once you have generated your Groq API key, copy it and paste it into the `.env` 
 
 For example:
 
-```{dotenv}
+```
 # .env
 GROQ_API_KEY=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
 NEO4J_USERNAME=neo4j
@@ -107,7 +109,7 @@ Download ChromeDriver ensuring that the version matches the version of Google Ch
 
 2. **For Mac Users Only:** Set the necessary permissions by running the following command in the terminal:
 
-   ```{bash}
+   ```
    sudo xattr -d com.apple.quarantine "/path/to/driver/executable/chromedriver"
    ```
 
@@ -117,11 +119,14 @@ Download ChromeDriver ensuring that the version matches the version of Google Ch
 
 After completing the setup steps, you can run the crawlers to download the data and then run the knowledge graph data loader script to start populating the property graph index into the Neo4j database. Once both of these steps are done, you can interact with the chatbot.
 
+**Note:** If you prefer to skip the data crawling and loading steps, you can load the Neo4j database directly from the provided dump file. See [Alternative: Load Database from Dump File](#alternative-load-database-from-dump-file) for instructions.
+
 ### Create a Python 3.11 Virtual Environment
 
 To ensure compatibility and maintain a clean project environment, create a virtual environment using Python 3.11:
 
 1. Create the virtual environment (replace `nzta_env` with your preferred environment name):
+
    ```
    python3.11 -m venv nzta_env
    ```
@@ -129,11 +134,13 @@ To ensure compatibility and maintain a clean project environment, create a virtu
 2. Activate the virtual environment:
 
    - On macOS/Linux:
+
      ```
      source nzta_env/bin/activate
      ```
 
    - On Windows:
+
      ```
      nzta_env\Scripts\activate
      ```
@@ -144,57 +151,73 @@ To ensure compatibility and maintain a clean project environment, create a virtu
 
 First, install the required dependencies:
 
-```{bash}
+```
 pip install -r requirements.txt
 ```
 
 ### Patch Files
+
 To apply custom changes to the original LlamaIndex source code for data ingestion and retrieval, run the following command:
 
-```{bash}
+```
 python patch.py
 ```
+
 This will overwrite the relevant files with the modifications described in the dissertation (Graph Based RAG.pdf). If you prefer to use the original LlamaIndex code, simply skip this step.
+
 To revert to the original LlamaIndex code after applying the patch, run:
 
-```{}
+```
 python revert_patch.py
-
 ```
 
 ### Crawl Data
 
+**Note:** If you prefer to skip the data crawling and loading steps, you can load the Neo4j database directly from the provided dump file. See [Alternative: Load Database from Dump File](#alternative-load-database-from-dump-file) for instructions.
+
 To crawl NZTA OIA responses:
 
-```{bash}
+```
 python crawler.py
 ```
 
 For Ministry of Transport data:
 
-```{bash}
+```
 python transport_gov_crawler.py
 ```
 
+
+
 ### Load Data into Neo4j
+**Note:** If you loaded the database from the dump file, you can skip this step.
 
 Once the crawlers have completed, start uploading data into Neo4j. Ensure you have started the database instance in the Neo4j Desktop application.
 
-```{bash}
+```
 python kg_data_loader.py
 ```
+
+
+### Alternative: Load Database from Dump File
+
+If you prefer to skip the data crawling and loading steps, you can load the Neo4j database directly from the provided dump file located at `oia_knowledge_graph/neo4j.dump`.
+
+Follow the instructions in [this Google Doc](https://docs.google.com/document/d/YOUR_LINK_HERE) to restore the database from the dump file.
+
+**Note:** Replace `YOUR_LINK_HERE` with the actual URL to the Google Doc containing the instructions.
 
 ### Run the Chatbot
 
 Navigate to the `chatbot` directory:
 
-```{bash}
+```
 cd chatbot
 ```
 
 Run the Flask app that hosts the chatbot:
 
-```{bash}
+```
 python kg_app.py
 ```
 
