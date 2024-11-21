@@ -9,13 +9,19 @@ if not venv_path:
     print("Error: Virtual environment is not activated.")
     sys.exit(1)
 
+# Determine the site-packages path based on the OS
+if os.name == "nt":  # Windows
+    site_packages_path = os.path.join(venv_path, "Lib", "site-packages")
+else:  # macOS/Linux
+    site_packages_path = os.path.join(venv_path, "lib", "python3.11", "site-packages")
+
 # Define the files and their original locations
 files_to_revert = {
-    f"{venv_path}/lib/python3.11/site-packages/llama_index/core/graph_stores/types.py",
-    f"{venv_path}/lib/python3.11/site-packages/llama_index/graph_stores/neo4j/neo4j_property_graph.py",
-    f"{venv_path}/lib/python3.11/site-packages/llama_index/core/indices/property_graph/base.py",
-    f"{venv_path}/lib/python3.11/site-packages/llama_index/core/indices/property_graph/sub_retrievers/base.py",
-    f"{venv_path}/lib/python3.11/site-packages/llama_index/core/indices/property_graph/sub_retrievers/vector.py"
+    os.path.join(site_packages_path, "llama_index", "core", "graph_stores", "types.py"),
+    os.path.join(site_packages_path, "llama_index", "graph_stores", "neo4j", "neo4j_property_graph.py"),
+    os.path.join(site_packages_path, "llama_index", "core", "indices", "property_graph", "base.py"),
+    os.path.join(site_packages_path, "llama_index", "core", "indices", "property_graph", "sub_retrievers", "base.py"),
+    os.path.join(site_packages_path, "llama_index", "core", "indices", "property_graph", "sub_retrievers", "vector.py"),
 }
 
 # Iterate over each file and revert them using the backup

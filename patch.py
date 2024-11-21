@@ -9,13 +9,19 @@ if not venv_path:
     print("Error: Virtual environment is not activated.")
     sys.exit(1)
 
+# Determine the site-packages path based on the OS
+if os.name == "nt":  # Windows
+    site_packages_path = os.path.join(venv_path, "Lib", "site-packages")
+else:  # macOS/Linux
+    site_packages_path = os.path.join(venv_path, "lib", "python3.11", "site-packages")
+
 # Define the patch mappings
 files_to_patch = {
-    "patch_files/graph_stores_types.py": f"{venv_path}/lib/python3.11/site-packages/llama_index/core/graph_stores/types.py",
-    "patch_files/Neo4j_property_graph_node_retrieval_patch.py": f"{venv_path}/lib/python3.11/site-packages/llama_index/graph_stores/neo4j/neo4j_property_graph.py",
-    "patch_files/property_graph_base.py": f"{venv_path}/lib/python3.11/site-packages/llama_index/core/indices/property_graph/base.py",
-    "patch_files/sub_retrievers_base.py": f"{venv_path}/lib/python3.11/site-packages/llama_index/core/indices/property_graph/sub_retrievers/base.py",
-    "patch_files/sub_retrievers_vector.py": f"{venv_path}/lib/python3.11/site-packages/llama_index/core/indices/property_graph/sub_retrievers/vector.py"
+    "patch_files/graph_stores_types.py": os.path.join(site_packages_path, "llama_index", "core", "graph_stores", "types.py"),
+    "patch_files/Neo4j_property_graph_node_retrieval_patch.py": os.path.join(site_packages_path, "llama_index", "graph_stores", "neo4j", "neo4j_property_graph.py"),
+    "patch_files/property_graph_base.py": os.path.join(site_packages_path, "llama_index", "core", "indices", "property_graph", "base.py"),
+    "patch_files/sub_retrievers_base.py": os.path.join(site_packages_path, "llama_index", "core", "indices", "property_graph", "sub_retrievers", "base.py"),
+    "patch_files/sub_retrievers_vector.py": os.path.join(site_packages_path, "llama_index", "core", "indices", "property_graph", "sub_retrievers", "vector.py"),
 }
 
 # Iterate over each file and apply patches
