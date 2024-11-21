@@ -15,6 +15,7 @@ A prototype chatbot developed for the New Zealand Transport Agency (NZTA), lever
   - [5. Set Up ChromeDriver](#5-set-up-chromedriver)
 - [Usage](#usage)
   - [Install Dependencies](#install-dependencies)
+  - [Patch Files](#patch-files)
   - [Crawl Data](#crawl-data)
   - [Load Data into Neo4j](#load-data-into-neo4j)
   - [Run the Chatbot](#run-the-chatbot)
@@ -122,6 +123,13 @@ First, install the required dependencies:
 
 ```{bash}
 pip install -r requirements.txt
+```
+
+### Patch Files
+Now we need to patch files with the changes made to Llamaindex original souce code to apply the changes for data ingestion and retrieval mentioned in the dissertation. To do this simply run 
+
+```{bash}
+python patch.py
 ```
 
 ### Crawl Data
