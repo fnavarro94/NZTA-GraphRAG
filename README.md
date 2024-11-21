@@ -131,6 +131,12 @@ Now we need to patch files with the changes made to Llamaindex original souce co
 ```{bash}
 python patch.py
 ```
+If you want to run the original Llamaindex code you can do so by not running the above or, in case you want to rever the changes
+
+```{}
+python revert_patch.py
+
+```
 
 ### Crawl Data
 
