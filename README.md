@@ -203,7 +203,7 @@ python kg_data_loader.py
 
 If you prefer to skip the data crawling and loading steps, you can load the Neo4j database directly from the provided dump file located at `oia_knowledge_graph/neo4j.dump`.
 
-Follow the instructions in [this Google Doc](https://docs.google.com/document/d/YOUR_LINK_HERE) to restore the database from the dump file.
+Follow the instructions in [this Google Doc](https://docs.google.com/document/d/1obL48wFZE8sySAR6Ita6M0VYoT8V9gdCXMxWvdU8UHg/edit?usp=sharing) to restore the database from the dump file.
 
 **Note:** Replace `YOUR_LINK_HERE` with the actual URL to the Google Doc containing the instructions.
 
