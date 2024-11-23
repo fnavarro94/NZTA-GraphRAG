@@ -114,31 +114,73 @@ for i in range(num_batches):
 
     # Process the current batch of files
     graph_documents = SimpleDirectoryReader(target_dir).load_data()
+    
+    extract_prompt = (
+    "Extract up to {max_knowledge_triplets} knowledge triplets from the given text. "
+    "Each triplet should be in the form of (head, relation, tail) with their respective types and properties.\n"
+    "---------------------\n"
+    "INITIAL ONTOLOGY:\n"
+    "Entity Types: {allowed_entity_types}\n"
+    "Entity Properties: {allowed_entity_properties}\n"
+    "Relation Types: {allowed_relation_types}\n"
+    "Relation Properties: {allowed_relation_properties}\n"
+    "\n"
+    "Use these types as a starting point, but introduce new types if necessary based on the context.\n"
+    "\n"
+    "GUIDELINES:\n"
+    "- Output in JSON format: [{{'head': '', 'head_type': '', 'head_props': {{...}}, 'relation': '', 'relation_props': {{...}}, 'tail': '', 'tail_type': '', 'tail_props': {{...}}}}]\n"
+    "- Use the most complete form for entities (e.g., 'New Zealand Transport Agency' instead of abbreviations)\n"
+    "For any reference to the New Zealand Transport Agency, including variations such as 'NZ Transport Agency Waka Kotahi', ‘NZ Transport Agency,’ ‘National Transport Agency,’ ‘Waka Kotahi,’ or any similar phrasing, create the entity node as 'New Zealand Transport Agency.' Ensure all variations of this entity are consistently mapped to 'New Zealand Transport Agency' in the output.\n"
+    "- Do not create entities like 'request' or 'response' as they appear frequently and do not contribute to meaningful graph structure.\n"
+    "- Do not create entities that are numbers, prices, or non-essential terms (e.g., dates unless critical to the meaning).\n"
+    "- Keep entities concise (3-5 words max).\n"
+    "- Break down complex phrases into multiple triplets for better granularity.\n"
+    "- Ensure the knowledge graph is coherent and easily understandable.\n"
+    "- Ensure that all property values are primitive types (e.g., String, Integer, Float, Boolean) or arrays of these types. Do not use maps or other complex structures.\n"
+    "---------------------\n"
+    "EXAMPLE:\n"
+    "Text: The New Zealand Transport Agency approved the funding for road maintenance on State Highway 1.\n"
+    "Wellington City Council is collaborating with the New Zealand Transport Agency on improving road safety initiatives.\n"
+    "Output:\n"
+    "[{{'head': 'New Zealand Transport Agency', 'head_type': 'AGENCY', 'head_props': {{'prop1': 'val', ...}}, "
+    "'relation': 'APPROVES', 'relation_props': {{'prop1': 'val', ...}}, "
+    "'tail': 'funding for road maintenance', 'tail_type': 'FUNDING_DECISION', 'tail_props': {{'prop1': 'val', ...}}}},\n"
+    " {{'head': 'Wellington City Council', 'head_type': 'ORGANIZATION', 'head_props': {{'prop1': 'val', ...}}, "
+    "'relation': 'COLLABORATES_WITH', 'relation_props': {{'prop1': 'val', ...}}, "
+    "'tail': 'New Zealand Transport Agency', 'tail_type': 'AGENCY', 'tail_props': {{'prop1': 'val', ...}}}},\n"
+    " {{'head': 'road safety initiatives', 'head_type': 'PROJECT', 'head_props': {{'prop1': 'val', ...}}, "
+    "'relation': 'IMPROVES', 'relation_props': {{'prop1': 'val', ...}}, "
+    "'tail': 'State Highway 1', 'tail_type': 'INFRASTRUCTURE', 'tail_props': {{'prop1': 'val', ...}}}}]\n"
+    "---------------------\n"
+    "Text: {text}\n"
+    "Output:\n"
+)
 
-
-    Settings.chunk_size = 800
+    Settings.chunk_size = 512
     Settings.chunk_overlap = 20
+
+
 
     kg_extractor = DynamicLLMPathExtractor(
     llm=llm,
-    max_triplets_per_chunk=20,
+    extract_prompt=extract_prompt,
+    max_triplets_per_chunk=15,
     
     num_workers=4,
     # Let the LLM infer entities and their labels (types) on the fly
-    allowed_entity_types=None,
+    allowed_entity_types=['People', 'Organizations', 'Locations', 'Processes', 'Agreements', 'Buildings', 'Streets', 'Projects', 'Events','Policies', 'Rules', 'Laws'],
     # Let the LLM infer relationships on the fly
     allowed_relation_types=None,
     # LLM will generate any entity properties, set `None` to skip property generation (will be faster without)
     allowed_relation_props=[],
     # LLM will generate any relation properties, set `None` to skip property generation (will be faster without)
     allowed_entity_props=[],
-)
+    )
 
     graph_index = PropertyGraphIndex.from_documents(
     graph_documents,
     property_graph_store=property_graph_store,
     storage_context=storage_context,
-    #kg_extractors=[SimpleLLMPathExtractor(llm=llm), ImplicitPathExtractor()],
     kg_extractors=[kg_extractor],
     embed_kg_nodes=True,
     show_progress=True)
