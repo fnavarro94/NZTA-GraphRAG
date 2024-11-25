@@ -72,8 +72,8 @@ vector_retriever = VectorContextRetriever(
     index.property_graph_store,
     embed_model=Settings.embed_model,
     include_text=True,
-    similarity_top_k=3,
-    path_depth=1,
+    similarity_top_k=4,
+    path_depth=3,
 )
 
 # Set up query engine
